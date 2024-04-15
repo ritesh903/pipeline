@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    types: [opened, closed]
 
 permissions:
   contents: read
@@ -44,5 +43,5 @@ jobs:
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
+      if: github.event.pull_request.merged
       run: terraform apply -auto-approve -input=false
