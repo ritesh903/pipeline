@@ -45,5 +45,5 @@ jobs:
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
-      if: github.event.pull_request.merged
+      if: github.event.pull_request.merged == true
       run: terraform apply -auto-approve -input=false
