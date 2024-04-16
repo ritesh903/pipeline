@@ -1,45 +1,66 @@
-name: 'Terraform'
+# name: 'Terraform'
 
-on:
-  pull_request:
-    branches: [ main ]
-    types: [opened, closed]
+# on:
+#   pull_request:
+#     branches: [ main ]
+#     types: [opened, closed]
 
-jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: self-hosted
+# jobs:
+#   terraform:
+#     name: 'Terraform'
+#     runs-on: self-hosted
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: .
+#     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: .
 
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
+#     steps:
+#     # Checkout the repository to the GitHub Actions runner
+#     - name: Checkout
+#       uses: actions/checkout@v3
       
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.8.0
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         terraform_version: 1.8.0
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#     - name: Terraform Init
+#       run: terraform init
+
+#     # Checks that all Terraform configuration files adhere to a canonical format
+#     - name: Terraform Format
+#       run: terraform fmt -check
+
+#     # Generates an execution plan for Terraform
+#     - name: Terraform Plan
+#       run: terraform plan -input=false
+
+#       # On push to "main", build or change infrastructure according to Terraform configuration files
+#     - name: Terraform Apply
+#       run: terraform apply -auto-approve -input=false
+#       if: github.event.pull_request.merged == true
+
+on: 
+  pull_request:
+    types: [opened, closed]
+name: Deploy
+jobs:
+  Deploy:
+    name: Terraform Deploy
+    runs-on: self-hosted
+    steps:
     - name: Terraform Init
       run: terraform init
 
-    # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
 
-    # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
 
-      # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false
       if: github.event.pull_request.merged == true
-
